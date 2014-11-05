@@ -312,10 +312,10 @@ namespace edn {
           }
         }
         if (homogenous) {
-          if (valueType = EdnInt) {
+          if (valueType == EdnInt) {
             node.type = EdnIntVector;
           }
-          if (valueType = EdnString) {
+          if (valueType == EdnString) {
             node.type = EdnStrVector;
           }
         }

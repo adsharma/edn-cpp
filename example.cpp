@@ -17,7 +17,7 @@ int main() {
     someEdn = std::string(it, end);
 
     EdnNode someMap = read(someEdn);
-    //std::cout << pprint(someMap) << std::endl;
+    std::cout << pprint(someMap) << std::endl;
   } catch (const char* e) {
     std::cout << "Error parsing: " << e << " full: " << someEdn << std::endl;
   }
