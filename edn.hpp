@@ -34,6 +34,8 @@ namespace edn {
 
     EdnList,
     EdnVector,
+    EdnIntVector,
+    EdnStrVector,
     EdnMap,
     EdnSet,
 
@@ -59,20 +61,22 @@ namespace edn {
   string typeToString(NodeType type) { 
     string output;
     switch (type) { 
-      case EdnSymbol:  output = "EdnSymbol";   break;
-      case EdnKeyword: output = "EdnKeyword";  break;
-      case EdnInt:     output = "EdnInt";      break;
-      case EdnFloat:   output = "EdnFloat";    break;
-      case EdnChar:    output = "EdnChar";     break;
-      case EdnBool:    output = "EdnBool";     break;
-      case EdnNil:     output = "EdnNil";      break;
-      case EdnString:  output = "EdnString";   break;
-      case EdnTagged:  output = "EdnTagged";   break;
-      case EdnList:    output = "EdnList";     break;
-      case EdnVector:  output = "EdnVector";   break;
-      case EdnSet:     output = "EdnSet";      break;
-      case EdnMap:     output = "EdnMap";      break;
-      case EdnDiscard: output = "EdnDiscard";  break;
+      case EdnSymbol:    output = "EdnSymbol";    break;
+      case EdnKeyword:   output = "EdnKeyword";   break;
+      case EdnInt:       output = "EdnInt";       break;
+      case EdnFloat:     output = "EdnFloat";     break;
+      case EdnChar:      output = "EdnChar";      break;
+      case EdnBool:      output = "EdnBool";      break;
+      case EdnNil:       output = "EdnNil";       break;
+      case EdnString:    output = "EdnString";    break;
+      case EdnTagged:    output = "EdnTagged";    break;
+      case EdnList:      output = "EdnList";      break;
+      case EdnVector:    output = "EdnVector";    break;
+      case EdnIntVector: output = "EdnIntVector"; break;
+      case EdnStrVector: output = "EdnStrVector"; break;
+      case EdnSet:       output = "EdnSet";       break;
+      case EdnMap:       output = "EdnMap";       break;
+      case EdnDiscard:   output = "EdnDiscard";   break;
     }
     return output;
   }
@@ -298,6 +302,24 @@ namespace edn {
     }
     else if (token.value == "[") {
       node.type = EdnVector;
+      if (!values.empty()) {
+        auto valueType = values.begin()->type;
+        bool homogenous = true;
+        for (auto& v : values) {
+          if (v.type != valueType) {
+            homogenous = false;
+            break;
+          }
+        }
+        if (homogenous) {
+          if (valueType = EdnInt) {
+            node.type = EdnIntVector;
+          }
+          if (valueType = EdnString) {
+            node.type = EdnStrVector;
+          }
+        }
+      }
     }
     if (token.value == "{") {
       node.type = EdnMap;

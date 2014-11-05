@@ -1,16 +1,24 @@
 #define DEBUG
 #include "edn.hpp"
 #include <iostream>
+#include <istream>
+#include <iterator>
 
 using edn::EdnNode;
 using edn::read;
 using edn::pprint;
 
 int main() {	
+  std::string someEdn;
   try {
-    EdnNode someMap = read("{:some :map :with [a vector of symbols]}");
-    std::cout << pprint(someMap) << std::endl;
+    std::cin >> std::noskipws;
+    std::istream_iterator<char> it(std::cin);
+    std::istream_iterator<char> end;
+    someEdn = std::string(it, end);
+
+    EdnNode someMap = read(someEdn);
+    //std::cout << pprint(someMap) << std::endl;
   } catch (const char* e) {
-    std::cout << "Error parsing: " << e << std::endl;
+    std::cout << "Error parsing: " << e << " full: " << someEdn << std::endl;
   }
 }
